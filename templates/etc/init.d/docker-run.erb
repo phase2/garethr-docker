@@ -44,11 +44,14 @@ start() {
                 exit 7
             else
                 rm -f $lockfile $cidfile
+                # Do a docker rm, which is safe if the container is stopped.
+                $docker rm $cid
             fi
         fi
     fi
 
     printf "Starting $prog:\t"
+
     $docker run --cidfile=$cidfile -d=true \
         <% if @username %>-u '<%= @username %>' <% end %> \
         <% if @hostname %>-h '<%= @hostname %>'<% end %> \
