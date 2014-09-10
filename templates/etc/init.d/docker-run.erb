@@ -75,6 +75,7 @@ start() {
             --lxc-conf="<%=lxcconf%>"<% end %> \
         <% end %> \
         -m <%= @memory_limit %> \
+        -c <%= @cpu_shares %> \
         <% if @links %><%= @links_array.map {|link| \
             "--link #{link}" }.join(' ') %> \
         <% end %> \

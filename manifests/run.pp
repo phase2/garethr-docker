@@ -22,6 +22,7 @@ define docker::run(
   $restart_service = true,
   $disable_network = false,
   $privileged = false,
+  $cpu_shares = 0,
 ) {
   include docker::params
   $docker_command = $docker::params::docker_command
@@ -29,7 +30,8 @@ define docker::run(
 
   validate_re($image, '^[\S]*$')
   validate_re($title, '^[\S]*$')
-  validate_re($memory_limit, '^[\d]*$')
+  validate_re($memory_limit, '^[\d]*[bkmg]?$')
+  validate_re($cpu_shares, '^[\d]*$')
   validate_string($docker_command)
   validate_string($service_name)
   if $command {
