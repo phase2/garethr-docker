@@ -5,6 +5,7 @@ define docker::build (
   $no_cache = false,
   $quiet = false,
   $rm = true,
+  $always = false,
 ) {
   $docker_command = $::docker::params::docker_command
 
@@ -13,6 +14,7 @@ define docker::build (
   validate_bool($no_cache)
   validate_bool($quiet)
   validate_bool($rm)
+  validate_bool($always)
   validate_absolute_path($directory)
   validate_re($image_tag, '^[\S/]*$')
 
@@ -20,5 +22,9 @@ define docker::build (
     path    => ['/bin', '/usr/bin'],
     command => "${docker_command} build --force-rm=${force_rm} --no-cache=${no_cache} --quiet=${quiet} --rm=${rm} --tag=\"${image_tag}\" ${directory}",
     require => Class['::docker'],
+    unless  => $always ? {
+      true  => undef,
+      false => "${docker_command} images unocha/php-fpm | /bin/grep -q unocha/php-fpm",
+    }
   }
 }
