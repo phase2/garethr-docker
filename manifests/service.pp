@@ -32,6 +32,7 @@ class docker::service (
   $execdriver           = $docker::execdriver,
   $storage_driver       = $docker::storage_driver,
   $tmp_dir              = $docker::tmp_dir,
+  $ulimit_nofile        = $docker::ulimit_nofile,
 ){
   $extra_parameters_array = any2array($extra_parameters)
 

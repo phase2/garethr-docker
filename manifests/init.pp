@@ -80,6 +80,9 @@
 #   Specify a custom docker command name
 #   Default is set on a per system basis in docker::params
 #
+# [*ulimit_nofile*]
+#   Set the docker daemon's limit on opened files
+#   Defaults to the running system's defaults
 class docker(
   $version                     = $docker::params::version,
   $ensure                      = $docker::params::ensure,
@@ -103,9 +106,11 @@ class docker(
   $package_name                = $docker::params::package_name,
   $service_name                = $docker::params::service_name,
   $docker_command              = $docker::params::docker_command,
+  $ulimit_nofile               = undef,
 ) inherits docker::params {
 
   validate_string($version)
+  validate_string($ulimit_nofile)
   validate_re($::osfamily, '^(Debian|RedHat)$', 'This module only works on Debian and Red Hat based systems.')
   validate_bool($manage_kernel)
   validate_bool($manage_package)
